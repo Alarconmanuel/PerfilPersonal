@@ -19,14 +19,14 @@ class PerfilViewModel : ViewModel() {
 
     private fun getPerfilData() = Perfil(
         nombre = "Manuel Eduardo Alarcon Aza",
-        fotografia = "https://google.com",
+        fotografia = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt9gPQRVGXwBobFGQAQyHiogXMz1wWlseowQ&s",
         programaAcademico = "Ingeniería de Sistemas y Computación",
         semestre = 5,
         descripcion = "Estudiante de la Universidad de Cundinamarca con gusto por el desarrollo de software y el analisis de datos.",
         edad = 19,
         ciudad = "Tenjo, Cundinamarca",
         correo = "manuel@gmail.com",
-        hobbies = listOf("Programar", "Leer tech", "Música", "Frameworks"),
+        hobbies = listOf("Programar", "Leer", "Música", "Frameworks"),
         pasatiempos = listOf("Videojuegos", "Series", "Dibujo", "Cocina"),
         deportes = listOf("Fútbol", "Ciclismo"),
         intereses = listOf("IA/ML", "Analitica de Datos", "Startups")

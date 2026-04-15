@@ -85,7 +85,6 @@ private fun HeaderSection(perfil: Perfil) {
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             SubcomposeAsyncImage(
-                // AHORA ES DINÁMICO: Tomará el link que pusimos en el ViewModel
                 model = perfil.fotografia,
                 contentDescription = perfil.nombre,
                 contentScale = ContentScale.Crop,
@@ -99,7 +98,6 @@ private fun HeaderSection(perfil: Perfil) {
                     }
                 },
                 error = {
-                    // Si falla el link de internet, muestra tu foto local
                     Image(
                         painter = painterResource(id = R.drawable.mi_foto_perfil),
                         contentDescription = "Foto de respaldo",
