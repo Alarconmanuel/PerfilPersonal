@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -24,12 +25,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import com.estudiante.perfilpersonal.R
 import com.estudiante.perfilpersonal.model.Perfil
 import com.estudiante.perfilpersonal.viewmodel.PerfilViewModel
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PantallaPerfilUI(
     viewModel: PerfilViewModel,
@@ -67,10 +70,42 @@ fun PantallaPerfilUI(
                 exit = fadeOut() + shrinkVertically()
             ) { ContactInfo(perfil) }
         }
-        item { ListSection("🎮 Hobbies", perfil.hobbies) }
-        item { ListSection("🎬 Pasatiempos", perfil.pasatiempos) }
-        item { ListSection("⚽ Deportes", perfil.deportes) }
-        item { ListSection("💡 Intereses", perfil.intereses) }
+        item {
+            ListSection(
+                title = "🎮 Hobbies",
+                items = perfil.hobbies,
+                chipColor = SuggestionChipDefaults.suggestionChipColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
+            )
+        }
+        item {
+            ListSection(
+                title = "🎬 Pasatiempos",
+                items = perfil.pasatiempos,
+                chipColor = SuggestionChipDefaults.suggestionChipColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer
+                )
+            )
+        }
+        item {
+            ListSection(
+                title = "⚽ Deportes",
+                items = perfil.deportes,
+                chipColor = SuggestionChipDefaults.suggestionChipColors(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                )
+            )
+        }
+        item {
+            ListSection(
+                title = "💡 Intereses",
+                items = perfil.intereses,
+                chipColor = SuggestionChipDefaults.suggestionChipColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                )
+            )
+        }
     }
 }
 
@@ -184,21 +219,47 @@ private fun InfoRow(label: String, value: String) {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun ListSection(title: String, items: List<String>) {
+private fun ListSection(title: String, items: List<String>, chipColor: ChipColors) {
+    var expanded by remember { mutableStateOf(true) }
+
     Card(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(Modifier.padding(16.dp)) {
-            Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-            Spacer(Modifier.height(12.dp))
-            HorizontalDivider()
-            items.forEach { item ->
-                Row(Modifier.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(8.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary))
-                    Spacer(Modifier.width(12.dp))
-                    Text(item)
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded },
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(
+                    if (expanded) "▲" else "▼",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            AnimatedVisibility(
+                visible = expanded,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                FlowRow(
+                    modifier = Modifier.padding(top = 12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items.forEach { item ->
+                        SuggestionChip(
+                            onClick = {},
+                            label = { Text(item, fontSize = 13.sp) },
+                            colors = chipColor
+                        )
+                    }
                 }
             }
         }
