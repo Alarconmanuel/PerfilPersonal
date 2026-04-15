@@ -222,7 +222,8 @@ private fun InfoRow(label: String, value: String) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ListSection(title: String, items: List<String>, chipColor: ChipColors) {
-    var expanded by remember { mutableStateOf(true) }
+    // Cambio clave: inicializado en false para que empiece cerrado
+    var expanded by remember { mutableStateOf(false) }
 
     Card(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
